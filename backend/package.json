@@ -2,14 +2,16 @@
   "name": "therm-pool-backend",
   "version": "1.0.0",
   "description": "ThermCoin Mining Pool",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --exit ./tests/**/*.test.js",
+    "coverage": "nyc npm test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
     "web3": "^4.1.0"
   }
 }

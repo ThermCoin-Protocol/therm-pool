@@ -15,3 +15,7 @@ frontend/out/
 
 # production
 frontend/build
+
+backend/.nyc_output
+
+backend/db/mining_pool.db
