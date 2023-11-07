@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'ThermCoin Pool',
-  description: 'Mining Pool Signup',
+  description: 'Mining Pool',
 }
 
 export default function RootLayout({ children }) {

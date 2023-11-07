@@ -1,0 +1,1 @@
+curl -X POST http://localhost:3000/pool -H "Content-Type: application/json" -d '{"nodeId":"94fde9c8b6c58880cbf45b7a34142d5f1a2a44f232d82b7a22d6b510db3a9ed1", "walletAddress":"0x3b74fa3410e032fe519f7a8101a411b1b3e4564d"}'

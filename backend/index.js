@@ -1,7 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const poolRouter = require('./routes/pool');
+
+app.use(cors({
+  origin: 'http://localhost:3001',  // Replace with your frontend's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
+  credentials: true  // Allow cookies
+}));
 
 app.use(express.json());
 
