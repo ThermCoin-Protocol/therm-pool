@@ -33,6 +33,6 @@ export default function Background({children}) {
   }, [vantaEffect])
  
   return (
-    <div ref={myRef} className="min-h-screen">{children}</div>
+    <div ref={myRef} className="min-h-[200vh]">{children}</div>
   )
 }

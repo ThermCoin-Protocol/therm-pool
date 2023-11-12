@@ -12,11 +12,8 @@ function createError(message, statusCode) {
 function getMultiple(page = 1) {
   const offset = (page - 1) * config.listPerPage;
   const data = db.query(`SELECT * FROM miners LIMIT ?,?`, [offset, config.listPerPage]);
-  const meta = {page};
-
-  if (!data.length) {
-    throw createError('No miners found', 404);
-  }
+  const hasNextPage = db.query(`SELECT * FROM miners LIMIT ?,?`, [offset + config.listPerPage, 1]).length > 0;
+  const meta = {page, hasNextPage};
 
   return { data, meta };
 }
