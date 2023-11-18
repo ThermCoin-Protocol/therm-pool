@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-sqlite",
+  "name": "therm-pool-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geshan/nodejs-sqlite.git"
+    "url": "git+https://github.com/thermcoin-protocol/therm-pool.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/geshan/nodejs-sqlite/issues"
+    "url": "https://github.com/thermcoin-protocol/therm-pool/issues"
   },
-  "homepage": "https://github.com/geshan/nodejs-sqlite#readme",
+  "homepage": "https://github.com/thermcoin-protocol/therm-pool#readme",
   "dependencies": {
     "better-sqlite3": "^8.0.0",
     "cors": "^2.8.5",
