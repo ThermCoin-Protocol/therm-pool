@@ -22,6 +22,7 @@ const tokenABI = [
 const tokenContract = new web3.eth.Contract(tokenABI, ERC_CONTRACT_ADDR);
 
 const rewardAmt = '100'; // Amount of tokens to be distributed per miner
+
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
     for (let i = 0; i < recipients.length; i += batchSize) {
@@ -55,5 +56,17 @@ async function distributeTokens() {
     }
 }
 
-// Run the distribution every 10 minutes
-setInterval(distributeTokens, 10 * 60 * 1000);
+// Function to subscribe to new block headers
+function listenForBlocks() {
+    web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
+        if (error) {
+            console.error('Error in block header subscription:', error);
+            return;
+        }
+
+        console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
+        await distributeTokens(blockHeader.number);
+    });
+}
+
+listenForBlocks();
