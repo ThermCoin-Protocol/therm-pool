@@ -6,8 +6,8 @@ const axios = require('axios');
 const {
     NETWORK_URL,
     GENESIS_WALLET_PRIV_KEY,
-    ERC_CONTRACT_ADDR,
-    MINER_LIST_URL
+    THERMCOIN_CONTRACT_ADDR,
+    POOL_BACKEND_URL
 } = process.env;
 
 // Initialize web3 instance
@@ -19,7 +19,7 @@ const tokenABI = [
 ];
 
 // Contract instance
-const tokenContract = new web3.eth.Contract(tokenABI, ERC_CONTRACT_ADDR);
+const tokenContract = new web3.eth.Contract(tokenABI, THERMCOIN_CONTRACT_ADDR);
 
 const rewardAmt = '100'; // Amount of tokens to be distributed per miner
 
@@ -28,7 +28,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
     for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
         const tx = {
-            to: ERC_CONTRACT_ADDR,
+            to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
             gas: await tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).estimateGas({ from: web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY).address }),
         };
@@ -42,7 +42,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
 // Function to get miners list and distribute tokens
 async function distributeTokens() {
     try {
-        const response = await axios.get(MINER_LIST_URL);
+        const response = await axios.get(POOL_BACKEND_URL);
         const miners = response.data;
         const minerAddresses = miners.map(miner => miner.walletAddress);
 
