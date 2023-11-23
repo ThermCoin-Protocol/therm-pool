@@ -1,13 +1,13 @@
 
-# Therm-Pool
+# therm-pool
 
 ## Introduction
-Welcome to Therm-Pool, the dedicated mining pool for ThermCoin - our innovative cryptocurrency protocol. Therm-Pool is designed to provide a seamless mining experience, facilitating users in registering and managing their mining nodes, and ensuring fair and secure distribution of mining rewards.
+Welcome to therm-pool, the dedicated mining pool for the ThermCoin protocol. therm-pool is designed to provide a seamless mining experience, facilitating miners in registering and managing their nodes, and ensuring fair distribution of mining rewards.
 
 ## Project Structure
-Therm-Pool consists of three primary components:
+therm-pool consists of three primary components:
 
-1. /frontend: A user-friendly interface built with Next.js, enabling users to interact with the backend system. Users can register, modify their node ID, and associate their wallet addresses through this platform.
+1. /frontend: A web UI built with Next.js, enabling users to interact with the backend system. Users can register, modify their node ID, and associate their wallet addresses through this platform.
 
 2. /backend: The backbone of Therm-Pool where miner data is securely stored. This includes node IDs, wallet addresses, and passwords. Our backend is built with robust security measures to ensure the safety of user data.
 
