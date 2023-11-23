@@ -4,15 +4,15 @@ const fs = require('fs');
 const dbUtil = require('./db-util');
 
 function getDB() {
-    if(process.env.NODE_ENV == 'test') {
-    const db = new sqlite(path.resolve('pool-test.db'), {fileMustExist: true});
+  if (process.env.NODE_ENV == 'test') {
+    const db = new sqlite(path.resolve('pool-test.db'), { fileMustExist: true });
     return db;
   } else {
-    if(!fs.existsSync('pool.db')) {
+    if (!fs.existsSync('pool.db')) {
       dbUtil.initDatabase('pool.db');
-      dbUtil.insertDummyData('pool.db');
+      dbUtil.insertData('pool.db');
     }
-    const db = new sqlite(path.resolve('pool.db'), {fileMustExist: true});
+    const db = new sqlite(path.resolve('pool.db'), { fileMustExist: true });
     return db;
   }
 }

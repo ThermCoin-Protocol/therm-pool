@@ -3,10 +3,10 @@ const path = require('path');
 
 function initDatabase(dbPath) {
     // Initialize the database
-    if(dbPath == undefined) {
+    if (dbPath == undefined) {
         console.error('DB path is undefined');
     }
-    
+
     const db = new sqlite(path.resolve(dbPath));
 
     // Define table schema and create it
@@ -26,10 +26,10 @@ function initDatabase(dbPath) {
 
 function clearDatabase(dbPath) {
     // Initialize the database
-    if(dbPath == undefined) {
+    if (dbPath == undefined) {
         console.error('DB path is undefined');
     }
-    
+
     const db = new sqlite(path.resolve(dbPath));
 
     // Define table schema and create it
@@ -45,10 +45,10 @@ function clearDatabase(dbPath) {
 
 function insertDummyData(dbPath) {
     // Initialize the database
-    if(dbPath == undefined) {
+    if (dbPath == undefined) {
         console.error('DB path is undefined');
     }
-    
+
     const db = new sqlite(path.resolve(dbPath));
 
     // Insert dummy data
@@ -71,8 +71,34 @@ function insertDummyData(dbPath) {
     db.close();
 }
 
+function insertData(dbPath) {
+    // Initialize the database
+    if (dbPath == undefined) {
+        console.error('DB path is undefined');
+    }
+
+    const db = new sqlite(path.resolve(dbPath));
+
+    // Insert dummy data
+    const insertDummyDataSQL = `
+    INSERT INTO miners (node_id, wallet_address)
+    VALUES
+        ('f726d9d4ffd47817ae4e20f1a83229b68e32978c506c150110d72c3d06292ea727a8efbecd9fcf698e70a64b6b122b4fa988afaa13c6724c059b9f242597484e', '0x1fE3F6A34Ff5fF49Dc659B846282E7480F5f1776');
+    `;
+
+    try {
+        db.exec(insertDummyDataSQL);
+    } catch (err) {
+        console.warn('Db write error:', err.message);
+    }
+
+    // Close the database
+    db.close();
+}
+
 module.exports = {
     initDatabase,
     clearDatabase,
-    insertDummyData
+    insertDummyData,
+    insertData
 };

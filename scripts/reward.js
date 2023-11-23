@@ -2,6 +2,9 @@ require('dotenv').config();
 const Web3 = require('web3');
 const axios = require('axios');
 
+// Import ThermCoin.json for the ABI
+const ThermCoin = require('../build/contracts/ThermCoin.json');
+
 // Load environment variables
 const {
     NETWORK_URL,
@@ -14,14 +17,12 @@ const {
 const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL));
 
 // ERC20 Token ABI 
-const tokenABI = [
-    // Add your token's ABI here
-];
+const tokenABI = ThermCoin.abi;
 
 // Contract instance
 const tokenContract = new web3.eth.Contract(tokenABI, THERMCOIN_CONTRACT_ADDR);
 
-const rewardAmt = '100'; // Amount of tokens to be distributed per miner
+const rewardAmt = '1';
 
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
