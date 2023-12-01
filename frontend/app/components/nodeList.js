@@ -14,7 +14,13 @@ export default function NodeList() {
   }, [currentPage]);
 
   const fetchNodes = (page) => {
-    fetch(`${apiUrl}/pool?page=${page}`)
+    fetch(`${apiUrl}/pool?page=${page}`, {
+      method: 'GET',
+      headers: {
+        // For ngrok server!
+        'ngrok-skip-browser-warning': 'true'
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -36,7 +42,7 @@ export default function NodeList() {
   };
 
   const handleNextPage = () => {
-    if(hasNextPage) {
+    if (hasNextPage) {
       setCurrentPage(currentPage => currentPage + 1);
     }
   };
@@ -51,23 +57,23 @@ export default function NodeList() {
         <ul className="mt-4 bg-[#f4eee0] p-5 rounded-md border-2 border-gray-600">
           {nodes.map((node, index) => (
             <li key={index} className="flex justify-between p-2 hover:bg-gray-100">
-                <span>Node ID: {node.node_id.slice(0, 15)}{node.node_id.length > 15 ? '...' : ''}</span>
-              <span>Wallet: {node.wallet_address.slice(0,15)}{node.wallet_address > 15 ? '...' : ''}</span>
+              <span>Node ID: {node.node_id.slice(0, 15)}{node.node_id.length > 15 ? '...' : ''}</span>
+              <span>Wallet: {node.wallet_address.slice(0, 15)}{node.wallet_address > 15 ? '...' : ''}</span>
             </li>
           ))}
         </ul>
         <div className="flex justify-between mt-4">
-          <button 
+          <button
             className={`rounded bg-stone-600 px-4 py-2 text-white hover:bg-stone-500 ${currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handlePrevPage}
             disabled={currentPage <= 1}
           >
             Previous
           </button>
-          <button 
+          <button
             className={`rounded bg-stone-600 px-4 py-2 text-white hover:bg-stone-500 ${!hasNextPage ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handleNextPage}
-            disabled={!hasNextPage} 
+            disabled={!hasNextPage}
           >
             Next
           </button>
