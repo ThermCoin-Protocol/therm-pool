@@ -30,7 +30,7 @@ export default function Register() {
 
   const handleChangeWallet = async (event) => {
     event.preventDefault();
-    const payload = { id: nodeId, address: walletAddress };
+    const payload = { nodeId, walletAddress };
     try {
       const response = await fetch(`${apiUrl}/pool/${nodeId}`, {
         method: "PUT",
