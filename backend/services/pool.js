@@ -13,7 +13,7 @@ function getMultiple(page = 1) {
   const offset = (page - 1) * config.listPerPage;
   const data = db.query(`SELECT * FROM miners LIMIT ?,?`, [offset, config.listPerPage]);
   const hasNextPage = db.query(`SELECT * FROM miners LIMIT ?,?`, [offset + config.listPerPage, 1]).length > 0;
-  const meta = {page, hasNextPage};
+  const meta = { page, hasNextPage };
 
   return { data, meta };
 }
@@ -25,7 +25,7 @@ function getOne(nodeId) {
     throw createError('Miner not found', 404);
   }
 
-  return miner[0];
+  return { data: [miner[0]] };
 }
 
 // Update miner by node id
@@ -40,7 +40,7 @@ function update(nodeId, miner) {
     throw createError('Error in updating miner', 500);
   }
 
-  return {message: 'Miner updated successfully'};
+  return { message: 'Miner updated successfully' };
 }
 
 // Delete miner by node id
@@ -51,7 +51,7 @@ function deleteMiner(nodeId) {
     throw createError('Error in deleting miner', 500);
   }
 
-  return {message: 'Miner deleted successfully'};
+  return { message: 'Miner deleted successfully' };
 }
 
 // Validate miner object
@@ -85,7 +85,7 @@ function create(minerObj) {
     const result = db.run('INSERT INTO miners (node_id, wallet_address) VALUES (?, ?)', [node_id, wallet_address]);
 
     if (result.changes) {
-      return {message: 'Miner added successfully'};
+      return { message: 'Miner added successfully' };
     } else {
       throw createError('No changes made to the database', 500);
     }

@@ -48,8 +48,8 @@ describe("Mining pool registration test", function () {
         .expect(200)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body[0]).to.have.property("node_id");
-          expect(res.body[0]).to.have.property("wallet_address");
+          expect(res.body.data[0]).to.have.property("node_id");
+          expect(res.body.data[0]).to.have.property("wallet_address");
           done();
         });
     });
@@ -83,8 +83,8 @@ describe("Mining pool registration test", function () {
       const nodeId =
         "cc1be0a288beb0f1c6b95bc5c75b3126153f2bb8fe3003e7c3e28e441e546f8d";
       const updatedData = {
-        id: "cc1be0a288beb0f1c6b95bc5c75b3126153f2bb8fe3003e7c3e28e441e546f8d",
-        address: "0xbbb9d32f2c5f0875dcca42c6931b5e587b2a7c29",
+        nodeId: "cc1be0a288beb0f1c6b95bc5c75b3126153f2bb8fe3003e7c3e28e441e546f8d",
+        walletAddress: "0xbbb9d32f2c5f0875dcca42c6931b5e587b2a7c29",
       };
       request(app)
         .put("/pool/" + nodeId)

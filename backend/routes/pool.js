@@ -9,46 +9,46 @@ function handleErrors(res, err) {
 }
 
 /* GET page of miners. */
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   try {
     res.json(pool.getMultiple(req.query.page));
-  } catch(err) {
+  } catch (err) {
     handleErrors(res, err);
   }
 });
 
 /* GET miner by node id. */
-router.get('/:nodeId', function(req, res) {
+router.get('/:nodeId', function (req, res) {
   try {
     res.json(pool.getOne(req.params.nodeId));
-  } catch(err) {
+  } catch (err) {
     handleErrors(res, err);
   }
 });
 
 /* PUT miner by node id. */
-router.put('/:nodeId', function(req, res) {
+router.put('/:nodeId', function (req, res) {
   try {
     res.json(pool.update(req.params.nodeId, req.body));
-  } catch(err) {
+  } catch (err) {
     handleErrors(res, err);
   }
 });
 
 /* POST miner */
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
   try {
     res.json(pool.create(req.body));
-  } catch(err) {
+  } catch (err) {
     handleErrors(res, err);
   }
 });
 
 /* DELETE miner by node id. */
-router.delete('/:nodeId', function(req, res) {
+router.delete('/:nodeId', function (req, res) {
   try {
     res.json(pool.deleteMiner(req.params.nodeId));
-  } catch(err) {
+  } catch (err) {
     handleErrors(res, err);
   }
 });
