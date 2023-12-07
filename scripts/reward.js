@@ -37,6 +37,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
         await web3.eth.accounts.signTransaction(tx, GENESIS_WALLET_PRIV_KEY)
             .then(signedTx => web3.eth.sendSignedTransaction(signedTx.rawTransaction));
         console.log(`Tokens distributed to batch starting at index ${i}`);
+        console.log("Rewarded miners: ", batch);
     }
 }
 
