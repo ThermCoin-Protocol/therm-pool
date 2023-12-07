@@ -60,7 +60,7 @@ async function getPeers() {
 async function fetchRegisteredMiners() {
     try {
         const response = await axios.get(POOL_BACKEND_URL);
-        const miners = response.data;
+        const miners = response.data[0];
 
         return miners;
     } catch (error) {
