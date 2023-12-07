@@ -60,7 +60,7 @@ async function getPeers() {
 async function fetchRegisteredMiners() {
     try {
         const response = await axios.get(POOL_BACKEND_URL);
-        const miners = JSON.parse(response.data);
+        const miners = response.data;
 
         return miners;
     } catch (error) {
@@ -72,7 +72,7 @@ async function fetchRegisteredMiners() {
 async function distributeTokens() {
     try {
         const miners = await fetchRegisteredMiners();
-        console.log("Fetching miners: ", miners);
+        console.log("Fetching miners: ", miners.data);
         const minerAddresses = miners.map(miner => miner.walletAddress);
         console.log("Retreiving miner addresses: ", minerAddresses);
         const batchSize = 50;
