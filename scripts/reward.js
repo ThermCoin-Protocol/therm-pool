@@ -60,7 +60,7 @@ async function getPeers() {
 async function fetchRegisteredMiners() {
     try {
         const response = await axios.get(POOL_BACKEND_URL);
-        const miners = response.data[0];
+        const miners = JSON.parse(response.data);
 
         return miners;
     } catch (error) {
@@ -99,4 +99,5 @@ async function distributeTokens() {
 
 // listenForBlocks();
 
-setInterval(distributeTokens, 10000);
+console.log("Distributing tokens in 2 seconds...")
+setInterval(distributeTokens, 2000);
