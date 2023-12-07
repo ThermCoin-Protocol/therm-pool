@@ -40,13 +40,38 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
     }
 }
 
-// Function to get miners list and distribute tokens
-async function distributeTokens() {
+async function getPeers() {
+    try {
+        const peers = await web3.currentProvider.send({
+            jsonrpc: '2.0',
+            method: 'admin_peers',
+            params: [],
+            id: new Date().getTime()
+        });
+
+        console.log(peers.result);
+    } catch (error) {
+        console.error('Error fetching peers:', error);
+    }
+}
+
+async function fetchRegisteredMiners() {
     try {
         const response = await axios.get(POOL_BACKEND_URL);
         const miners = response.data;
-        const minerAddresses = miners.map(miner => miner.walletAddress);
 
+        return miners;
+    } catch (error) {
+        console.error('Error fetching registered miners:', error);
+    }
+}
+
+// Function to get miners list and distribute tokens
+async function distributeTokens() {
+    try {
+        const miners = await fetchRegisteredMiners();
+
+        const minerAddresses = miners.map(miner => miner.walletAddress);
         const batchSize = 50;
 
         for (let i = 0; i < minerAddresses.length; i += batchSize) {
@@ -57,17 +82,20 @@ async function distributeTokens() {
     }
 }
 
-// Function to subscribe to new block headers
-function listenForBlocks() {
-    web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
-        if (error) {
-            console.error('Error in block header subscription:', error);
-            return;
-        }
+// TBD
+// // Function to subscribe to new block headers
+// function listenForBlocks() {
+//     web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
+//         if (error) {
+//             console.error('Error in block header subscription:', error);
+//             return;
+//         }
 
-        console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
-        await distributeTokens(blockHeader.number);
-    });
-}
+//         console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
+//         await distributeTokens(blockHeader.number);
+//     });
+// }
 
-listenForBlocks();
+// listenForBlocks();
+
+setInterval(distributeTokens, 10000);
