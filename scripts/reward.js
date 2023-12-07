@@ -28,6 +28,7 @@ const rewardAmt = '1';
 async function distributeTokensBatch(recipients, amount, batchSize) {
     for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
+        console.log("Calling distributeReward()...");
         const tx = {
             to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
@@ -71,13 +72,12 @@ async function fetchRegisteredMiners() {
 async function distributeTokens() {
     try {
         const miners = await fetchRegisteredMiners();
-
+        console.log("Fetching miners: ", miners);
         const minerAddresses = miners.map(miner => miner.walletAddress);
+        console.log("Retreiving miner addresses: ", minerAddresses);
         const batchSize = 50;
-
-        for (let i = 0; i < minerAddresses.length; i += batchSize) {
-            await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
-        }
+        console.log("Batch size: ", batchSize);
+        await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
     } catch (error) {
         console.error('Error in distributing tokens:', error);
     }
