@@ -13,6 +13,11 @@ const {
     POOL_BACKEND_URL
 } = process.env;
 
+console.log("NETWORK_URL: ", NETWORK_URL);
+console.log("GENESIS_WALLET_PRIV_KEY: ", GENESIS_WALLET_PRIV_KEY);
+console.log("THERMCOIN_CONTRACT_ADDR: ", THERMCOIN_CONTRACT_ADDR);
+console.log("POOL_BACKEND_URL: ", POOL_BACKEND_URL);
+
 // Initialize web3 instance
 const web3 = new Web3(NETWORK_URL);
 
