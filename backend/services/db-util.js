@@ -83,7 +83,7 @@ function insertData(dbPath) {
     const insertDummyDataSQL = `
     INSERT INTO miners (node_id, wallet_address)
     VALUES
-        ('f726d9d4ffd47817ae4e20f1a83229b68e32978c506c150110d72c3d06292ea727a8efbecd9fcf698e70a64b6b122b4fa988afaa13c6724c059b9f242597484e', '0x1fE3F6A34Ff5fF49Dc659B846282E7480F5f1776');
+        ('enode://87a82fe300dc36a8861fda9c3f86de723d04a782c5e39bf301a5296e92cc6c2d966bbd005ef413f40869166e5ce88b164ac4c25e6b1c65209d0d0f4aba649f26', '0x1fE3F6A34Ff5fF49Dc659B846282E7480F5f1776');
     `;
 
     try {
