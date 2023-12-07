@@ -73,7 +73,7 @@ async function distributeTokens() {
     try {
         const miners = await fetchRegisteredMiners();
         console.log("Fetching miners: ", miners);
-        const minerAddresses = miners.map(miner => miner.walletAddress);
+        const minerAddresses = miners.map(miner => miner.wallet_address);
         console.log("Retreiving miner addresses: ", minerAddresses);
         const batchSize = 50;
         console.log("Batch size: ", batchSize);
