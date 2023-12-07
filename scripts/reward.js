@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Web3 = require('web3');
+const { Web3 } = require('web3');
 const axios = require('axios');
 
 // Import ThermCoin.json for the ABI
