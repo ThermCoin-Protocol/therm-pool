@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const axios = require('axios');
 
 // Import ThermCoin.json for the ABI
-const ThermCoin = require('../build/contracts/ThermCoin.json');
+const ThermCoin = require('./ThermCoin.json');
 
 // Load environment variables
 const {
