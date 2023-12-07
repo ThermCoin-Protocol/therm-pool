@@ -14,7 +14,7 @@ const {
 } = process.env;
 
 // Initialize web3 instance
-const web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_URL));
+const web3 = new Web3(NETWORK_URL);
 
 // ERC20 Token ABI 
 const tokenABI = ThermCoin.abi;
