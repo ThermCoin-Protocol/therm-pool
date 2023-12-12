@@ -32,7 +32,7 @@ const rewardAmt = '1';
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
     // Create account object from private key
-    const account = web3.eth.accounts.privateKeyToAccount(toString(GENESIS_WALLET_PRIV_KEY));
+    const account = web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY);
     console.log(account); // Temporarily for debugging
 
     for (let i = 0; i < recipients.length; i += batchSize) {
