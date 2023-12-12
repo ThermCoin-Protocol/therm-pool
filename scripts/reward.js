@@ -27,7 +27,7 @@ const tokenABI = ThermCoin.abi;
 // Contract instance
 const tokenContract = new web3.eth.Contract(tokenABI, THERMCOIN_CONTRACT_ADDR);
 
-const rewardAmt = '1';
+const rewardAmt = '11';
 
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
