@@ -38,14 +38,14 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
     for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
         console.log("Calling distributeReward()...");
-        const estimatedGas = await tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).estimateGas({ from: account.address });
-        const gasLimit = Number(estimatedGas) * 2;
+        const currentNonce = await web3.eth.getTransactionCount(account.address, 'pending');
         const tx = {
             from: account.address,
             to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
             gas: gasLimit.toString(16),
-            gasPrice: '0x0',
+            gasPrice: '0x1',
+            nonce: web3.utils.toHex(currentNonce + i),
         };
 
         await web3.eth.accounts.signTransaction(tx, GENESIS_WALLET_PRIV_KEY)
