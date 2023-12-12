@@ -93,6 +93,8 @@ async function distributeTokens() {
         await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
     } catch (error) {
         console.error('Error in distributing tokens:', error);
+    } finally {
+        setTimeout(distributeTokens, 2000);
     }
 }
 
@@ -113,4 +115,4 @@ async function distributeTokens() {
 // listenForBlocks();
 
 console.log("Distributing tokens in 2 seconds...")
-setInterval(distributeTokens, 2000);
+distributeTokens();
