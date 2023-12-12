@@ -43,6 +43,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
             to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
             gas: 1,
+            gasPrice: 0
         };
 
         await web3.eth.accounts.signTransaction(tx, GENESIS_WALLET_PRIV_KEY)
