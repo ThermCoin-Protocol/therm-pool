@@ -45,7 +45,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
             gas: 100000,
             gasPrice: '0x100',
-            nonce: web3.utils.toHex(currentNonce + i),
+            nonce: web3.utils.toHex(currentNonce + BigInt(i)),
         };
 
         await web3.eth.accounts.signTransaction(tx, GENESIS_WALLET_PRIV_KEY)
