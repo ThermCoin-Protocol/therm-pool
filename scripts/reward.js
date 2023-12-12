@@ -31,13 +31,17 @@ const rewardAmt = '1';
 
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
+    // Create account object from private key
+    const account = web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY);
+    console.log(account); // Temporarily for debugging
+
     for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
         console.log("Calling distributeReward()...");
         const tx = {
             to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
-            gas: await tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).estimateGas({ from: toString((web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY).address)) }),
+            gas: await tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).estimateGas({ from: account.address }),
         };
 
         await web3.eth.accounts.signTransaction(tx, GENESIS_WALLET_PRIV_KEY)
