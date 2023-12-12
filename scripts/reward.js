@@ -42,7 +42,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
             from: account.address,
             to: THERMCOIN_CONTRACT_ADDR,
             data: tokenContract.methods.distributeReward(batch, web3.utils.toWei(amount.toString(), 'ether'), 0, batch.length).encodeABI(),
-            gas: 22548,
+            gas: 55000,
             gasPrice: 0
         };
 
