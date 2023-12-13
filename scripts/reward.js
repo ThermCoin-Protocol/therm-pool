@@ -1,5 +1,7 @@
 require('dotenv').config();
 const { Web3 } = require('web3');
+import { IpcProvider } from 'web3-providers-ipc';
+
 const net = require('net');
 const axios = require('axios');
 
@@ -25,7 +27,7 @@ console.log("IPC_PATH: ", IPC_PATH);
 const web3 = new Web3(NETWORK_URL);
 
 // Web3 instance for IPC
-const web3IPC = new Web3(new Web3.providers.IpcProvider(IPC_PATH, net));
+const web3IPC = new Web3(new IpcProvider(IPC_PATH, net));
 
 // ERC20 Token ABI 
 const tokenABI = ThermCoin.abi;
