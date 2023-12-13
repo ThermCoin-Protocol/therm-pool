@@ -19,12 +19,13 @@ console.log("NETWORK_URL: ", NETWORK_URL);
 console.log("GENESIS_WALLET_PRIV_KEY: ", GENESIS_WALLET_PRIV_KEY);
 console.log("THERMCOIN_CONTRACT_ADDR: ", THERMCOIN_CONTRACT_ADDR);
 console.log("POOL_BACKEND_URL: ", POOL_BACKEND_URL);
+console.log("IPC_PATH: ", IPC_PATH);
 
 // Initialize web3 instance
 const web3 = new Web3(NETWORK_URL);
 
 // Web3 instance for IPC
-const web3IPC = new Web3(new Web3.providers.IpcProvider(ipcPath, net));
+const web3IPC = new Web3(new Web3.providers.IpcProvider(IPC_PATH, net));
 
 // ERC20 Token ABI 
 const tokenABI = ThermCoin.abi;
