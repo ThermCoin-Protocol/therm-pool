@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Web3 } = require('web3');
-import { IpcProvider } from 'web3-providers-ipc';
+const IpcProvider = require('web3-providers-ipc').IpcProvider;
 
 const net = require('net');
 const axios = require('axios');
