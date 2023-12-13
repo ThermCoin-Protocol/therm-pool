@@ -67,7 +67,8 @@ async function getPeers() {
     try {
         const peers = await web3IPC.currentProvider.request({
             method: 'admin_peers',
-            params: []
+            params: [],
+            id: new Date().getTime()
         });
 
         console.log("Peers: ", peers);
