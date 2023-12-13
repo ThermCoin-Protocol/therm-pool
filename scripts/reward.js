@@ -65,7 +65,7 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
 
 async function getPeers() {
     try {
-        const peers = await web3IPC.eth.currentProvider.request({
+        const peers = await web3IPC.currentProvider.request({
             method: 'admin_peers',
             params: []
         });
