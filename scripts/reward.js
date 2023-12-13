@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Web3 } = require('web3');
+const net = require('net');
 const axios = require('axios');
 
 // Import ThermCoin.json for the ABI
@@ -10,7 +11,8 @@ const {
     NETWORK_URL,
     GENESIS_WALLET_PRIV_KEY,
     THERMCOIN_CONTRACT_ADDR,
-    POOL_BACKEND_URL
+    POOL_BACKEND_URL,
+    IPC_PATH
 } = process.env;
 
 console.log("NETWORK_URL: ", NETWORK_URL);
@@ -21,13 +23,16 @@ console.log("POOL_BACKEND_URL: ", POOL_BACKEND_URL);
 // Initialize web3 instance
 const web3 = new Web3(NETWORK_URL);
 
+// Web3 instance for IPC
+const web3IPC = new Web3(new Web3.providers.IpcProvider(ipcPath, net));
+
 // ERC20 Token ABI 
 const tokenABI = ThermCoin.abi;
 
 // Contract instance
 const tokenContract = new web3.eth.Contract(tokenABI, THERMCOIN_CONTRACT_ADDR);
 
-const rewardAmt = '11';
+const rewardDecayFactor = 0.0000001;
 
 // Function to distribute tokens in batches
 async function distributeTokensBatch(recipients, amount, batchSize) {
@@ -57,17 +62,22 @@ async function distributeTokensBatch(recipients, amount, batchSize) {
 
 async function getPeers() {
     try {
-        const peers = await web3.currentProvider.send({
-            jsonrpc: '2.0',
+        const peers = await web3IPC.eth.currentProvider.request({
             method: 'admin_peers',
-            params: [],
-            id: new Date().getTime()
+            params: []
         });
 
-        console.log(peers.result);
+        console.log("Peers: ", peers);
+        return peers.result.map(peer => peer.id);
     } catch (error) {
         console.error('Error fetching peers:', error);
+        return [];
     }
+}
+
+async function verifyMiners(miners) {
+    const peerNodeIds = await getPeers();
+    return miners.filter(miner => peerNodeIds.includes(miner.node_id));
 }
 
 async function fetchRegisteredMiners() {
@@ -88,9 +98,18 @@ async function distributeTokens() {
         console.log("Fetching miners: ", miners);
         const minerAddresses = miners.map(miner => miner.wallet_address);
         console.log("Retreiving miner addresses: ", minerAddresses);
+        const verifiedMiners = await verifyMiners(miners);
+        console.log("Verified miners: ", verifiedMiners);
         const batchSize = 50;
         console.log("Batch size: ", batchSize);
-        await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
+        const account = web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY);
+        const accountTokenBalance = web3.utils.fromWei(await tokenContract.methods.balanceOf(account.address).call(), 'ether');
+        console.log("Core wallet BTUC balance: ", accountTokenBalance);
+        const blockReward = accountTokenBalance * rewardDecayFactor;
+        console.log("Total block reward: ", blockReward);
+        const rewardAmt = Math.floor(blockReward / minerAddresses.length);
+        console.log("Reward per miner: ", rewardAmt);
+        // await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
     } catch (error) {
         console.error('Error in distributing tokens:', error);
     } finally {
@@ -114,5 +133,5 @@ async function distributeTokens() {
 
 // listenForBlocks();
 
-console.log("Distributing tokens in 2 seconds...")
+console.log("Distributing tokens in 15 seconds...")
 distributeTokens();
