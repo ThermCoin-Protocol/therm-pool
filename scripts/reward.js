@@ -121,8 +121,7 @@ async function distributeTokens() {
     // }
 }
 
-// TBD
-// Function to subscribe to new block headers
+let isProcessing = false;
 
 async function listenForBlocks() {
     web3IPC.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
@@ -147,9 +146,7 @@ async function listenForBlocks() {
         } finally {
             isProcessing = false;
         }
-    }).on('connected', subscriptionId => {
-        console.log(`Subscribed to new block headers with subscription ID: ${subscriptionId}`);
-    }).on('error', console.error);
+    })
 }
 
 listenForBlocks();
