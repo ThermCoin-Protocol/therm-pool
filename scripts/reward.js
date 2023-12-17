@@ -101,7 +101,6 @@ async function distributeTokens() {
         const miners = await fetchRegisteredMiners();
         console.log("Fetching miners: ", miners);
         const minerAddresses = miners.map(miner => miner.wallet_address);
-        console.log("Retreiving miner addresses: ", minerAddresses);
         const verifiedMiners = await verifyMiners(miners);
         console.log("Verified miners: ", verifiedMiners);
         const batchSize = 50;
@@ -113,29 +112,30 @@ async function distributeTokens() {
         console.log("Total block reward: ", blockReward);
         const rewardAmt = Math.floor(blockReward / minerAddresses.length);
         console.log("Reward per miner: ", rewardAmt);
-        // await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
+        await distributeTokensBatch(minerAddresses, rewardAmt, batchSize);
     } catch (error) {
         console.error('Error in distributing tokens:', error);
-    } finally {
-        setTimeout(distributeTokens, 2000);
     }
+    // } finally {
+    //     setTimeout(distributeTokens, 2000);
+    // }
 }
 
 // TBD
-// // Function to subscribe to new block headers
-// function listenForBlocks() {
-//     web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
-//         if (error) {
-//             console.error('Error in block header subscription:', error);
-//             return;
-//         }
+// Function to subscribe to new block headers
+function listenForBlocks() {
+    web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
+        if (error) {
+            console.error('Error in block header subscription:', error);
+            return;
+        }
 
-//         console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
-//         await distributeTokens(blockHeader.number);
-//     });
-// }
+        console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
+        await distributeTokens();
+    });
+}
 
-// listenForBlocks();
+listenForBlocks();
 
-console.log("Distributing tokens in 15 seconds...")
-distributeTokens();
+// console.log("Distributing tokens in 15 seconds...")
+// distributeTokens();
