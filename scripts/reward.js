@@ -123,6 +123,7 @@ async function distributeTokens() {
 
 async function listenForBlocks() {
     let lastProcessedBlock = 0;
+    let isProcessing = false;
 
     const processBlocks = async () => {
         try {
