@@ -145,7 +145,7 @@ async function listenForBlocks() {
     setInterval(async () => {
         try {
             const currentBlock = await web3IPC.eth.getBlockNumber();
-            for (let blockNumber = lastProcessedBigInt + BigInt(1); blockNumber <= currentBlock; blockNumber++) {
+            for (let blockNumber = lastProcessedBlock + BigInt(1); blockNumber <= currentBlock; blockNumber++) {
                 blockQueue.push(blockNumber);
             }
             lastProcessedBlock = currentBlock;
