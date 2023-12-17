@@ -123,16 +123,33 @@ async function distributeTokens() {
 
 // TBD
 // Function to subscribe to new block headers
-function listenForBlocks() {
-    web3.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
+
+async function listenForBlocks() {
+    web3IPC.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
         if (error) {
-            console.error('Error in block header subscription:', error);
+            console.error('Error in block subscription:', error);
             return;
         }
 
-        console.log(`New block detected: ${blockHeader.number}, distributing tokens...`);
-        await distributeTokens();
-    });
+        if (isProcessing) {
+            console.log(`Block ${blockHeader.number} received but still processing the previous block.`);
+            return;
+        }
+
+        isProcessing = true;
+        console.log(`Processing block number: ${blockHeader.number}`);
+
+        try {
+            await distributeTokens(blockHeader.number);
+            console.log(`Processed block number: ${blockHeader.number}`);
+        } catch (err) {
+            console.error(`Error in processing block number ${blockHeader.number}:`, err);
+        } finally {
+            isProcessing = false;
+        }
+    }).on('connected', subscriptionId => {
+        console.log(`Subscribed to new block headers with subscription ID: ${subscriptionId}`);
+    }).on('error', console.error);
 }
 
 listenForBlocks();
