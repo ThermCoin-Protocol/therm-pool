@@ -72,7 +72,7 @@ async function getPeers() {
         });
 
         console.log("Peers: ", peers);
-        return peers.result.map(peer => peer.id);
+        return peers.result.map(peer => peer.enode.split('@')[0]);
     } catch (error) {
         console.error('Error fetching peers:', error);
         return [];
