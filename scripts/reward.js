@@ -41,7 +41,6 @@ const rewardDecayFactor = 0.0000001;
 async function distributeTokensBatch(recipients, amount, batchSize) {
     // Create account object from private key
     const account = web3.eth.accounts.privateKeyToAccount(GENESIS_WALLET_PRIV_KEY);
-    console.log(account); // Temporarily for debugging
 
     for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
@@ -120,41 +119,44 @@ async function distributeTokens() {
     //     setTimeout(distributeTokens, 2000);
     // }
 }
-
 async function listenForBlocks() {
-    let lastProcessedBlock = 0;
-    let isProcessing = false;
+    let lastProcessedBlock = await web3IPC.eth.getBlockNumber();
+    let blockQueue = [];
 
-    const processBlocks = async () => {
+    const processQueue = async () => {
+        if (blockQueue.length === 0) {
+            return;
+        }
+
+        const blocksToProcess = [...blockQueue];
+        blockQueue = [];
+
+        console.log(`Processing blocks: ${blocksToProcess.join(', ')}`);
         try {
-            const currentBlock = await web3IPC.eth.getBlockNumber();
-            if (currentBlock > lastProcessedBlock) {
-                for (let blockNumber = lastProcessedBlock + 1; blockNumber <= currentBlock; blockNumber++) {
-                    if (isProcessing) {
-                        console.log(`Block ${blockNumber} received but still processing the previous block.`);
-                        return;
-                    }
-
-                    isProcessing = true;
-                    console.log(`Processing block number: ${blockNumber}`);
-
-                    try {
-                        await distributeTokens(blockNumber);
-                        console.log(`Processed block number: ${blockNumber}`);
-                    } catch (err) {
-                        console.error(`Error in processing block number ${blockNumber}:`, err);
-                    } finally {
-                        isProcessing = false;
-                    }
-                }
-                lastProcessedBlock = currentBlock;
-            }
+            // Example: Process blocks in a batch
+            await distributeTokensBatch(blocksToProcess);
         } catch (error) {
-            console.error('Error in processing blocks:', error);
+            console.error('Error processing blocks:', error);
+            // Re-queue the blocks for retry
+            blockQueue.unshift(...blocksToProcess);
         }
     };
 
-    setInterval(processBlocks, 1000); // Poll every 1 seconds
+    setInterval(async () => {
+        try {
+            const currentBlock = await web3IPC.eth.getBlockNumber();
+            for (let blockNumber = lastProcessedBlock + 1; blockNumber <= currentBlock; blockNumber++) {
+                blockQueue.push(blockNumber);
+            }
+            lastProcessedBlock = currentBlock;
+
+            if (blockQueue.length > 0) {
+                await processQueue();
+            }
+        } catch (error) {
+            console.error('Error in block polling:', error);
+        }
+    }, 5000);
 }
 
 listenForBlocks();
