@@ -121,35 +121,39 @@ async function distributeTokens() {
     // }
 }
 
-let isProcessing = false;
-
 async function listenForBlocks() {
-    web3IPC.eth.subscribe('newBlockHeaders', async (error, blockHeader) => {
-        if (error) {
-            console.error('Error in block subscription:', error);
-            return;
-        }
+    let lastProcessedBlock = 0;
 
-        if (isProcessing) {
-            console.log(`Block ${blockHeader.number} received but still processing the previous block.`);
-            return;
-        }
-
-        isProcessing = true;
-        console.log(`Processing block number: ${blockHeader.number}`);
-
+    const processBlocks = async () => {
         try {
-            await distributeTokens(blockHeader.number);
-            console.log(`Processed block number: ${blockHeader.number}`);
-        } catch (err) {
-            console.error(`Error in processing block number ${blockHeader.number}:`, err);
-        } finally {
-            isProcessing = false;
+            const currentBlock = await web3IPC.eth.getBlockNumber();
+            if (currentBlock > lastProcessedBlock) {
+                for (let blockNumber = lastProcessedBlock + 1; blockNumber <= currentBlock; blockNumber++) {
+                    if (isProcessing) {
+                        console.log(`Block ${blockNumber} received but still processing the previous block.`);
+                        return;
+                    }
+
+                    isProcessing = true;
+                    console.log(`Processing block number: ${blockNumber}`);
+
+                    try {
+                        await distributeTokens(blockNumber);
+                        console.log(`Processed block number: ${blockNumber}`);
+                    } catch (err) {
+                        console.error(`Error in processing block number ${blockNumber}:`, err);
+                    } finally {
+                        isProcessing = false;
+                    }
+                }
+                lastProcessedBlock = currentBlock;
+            }
+        } catch (error) {
+            console.error('Error in processing blocks:', error);
         }
-    })
+    };
+
+    setInterval(processBlocks, 1000); // Poll every 1 seconds
 }
 
 listenForBlocks();
-
-// console.log("Distributing tokens in 15 seconds...")
-// distributeTokens();
