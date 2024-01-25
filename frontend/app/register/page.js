@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <Background>
         <Register />
-        <NodeList/>
+        <NodeList />
       </Background>
     </>
   );

@@ -3,8 +3,8 @@
 import NET from 'vanta/dist/vanta.net.min'
 import * as THREE from 'three'
 import { useEffect, useRef, useState } from 'react'
- 
-export default function Background({children}) {
+
+export default function Background({ children }) {
   const [vantaEffect, setVantaEffect] = useState(null)
   const myRef = useRef(null)
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Background({children}) {
       if (vantaEffect) vantaEffect.destroy()
     }
   }, [vantaEffect])
- 
+
   return (
     <div ref={myRef} className="min-h-[200vh]">{children}</div>
   )

@@ -115,9 +115,6 @@ async function distributeTokens() {
     } catch (error) {
         console.error('Error in distributing tokens:', error);
     }
-    // } finally {
-    //     setTimeout(distributeTokens, 2000);
-    // }
 }
 async function listenForBlocks() {
     let lastProcessedBlock = await web3IPC.eth.getBlockNumber();
@@ -133,8 +130,7 @@ async function listenForBlocks() {
 
         console.log(`Processing blocks: ${blocksToProcess.join(', ')}`);
         try {
-            // Example: Process blocks in a batch
-            await distributeTokensBatch(blocksToProcess);
+            await distributeTokens();
         } catch (error) {
             console.error('Error processing blocks:', error);
             // Re-queue the blocks for retry

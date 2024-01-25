@@ -1,0 +1,35 @@
+# How to Mine ThermCoin 💻
+
+Start mining ThermCoin with this simple guide!
+
+## Connecting to Thermcoin Network
+
+### Create wallet with MetaMask
+
+1. **Download and Open MetaMask**
+2. **Add Network**: Go to Settings -> Add a network -> Add a network manually
+3. **Network Details**: 
+   - Network name: Thermcoin Network
+   - RPC URL: TBA:8546
+   - Chain ID: 7349
+   - Symbol: GAS
+4. **Import Token**:
+   - Contract address: 0xc109416D90e75Dcb9A70972D30ADe475427EDaA8
+   - Token symbol: BTUC
+
+## Mining Quick-Start Guide
+
+1. **Download Thermcoin Executable**: [ThermCoin GitHub](https://github.com/ThermCoin-Protocol/go-thermcoin/releases/)
+2. **Unzip and Setup**: Place "therm" executable in folder with genesis block (genesis.json).
+3. **Data Directory Setup**:
+   ```shell
+   mkdir myNode
+   therm init genesis.json
+   ```
+4. **Start Mining**:
+   ```shell
+   therm --bootnodes <bootnode-enode-url> --nodiscover --snapshot=false --mine
+   ```
+5. **Register with Mining Pool**: Visit [Therm-Pool Registration](https://therm-pool.vercel.app/register) and enter your Enode URL and Wallet address.
+
+Congratulations! You are now a proud supporter of the ThermCoin protocol! 🎉
