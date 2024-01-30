@@ -118,6 +118,7 @@ async function distributeTokens() {
 }
 async function listenForBlocks() {
     let lastProcessedBlock = await web3IPC.eth.getBlockNumber();
+    console.log("Last processed block: ", lastProcessedBlock);
     let blockQueue = [];
 
     const processQueue = async () => {
@@ -141,6 +142,7 @@ async function listenForBlocks() {
     setInterval(async () => {
         try {
             const currentBlock = await web3IPC.eth.getBlockNumber();
+            console.log("Current block: ", currentBlock);
             for (let blockNumber = lastProcessedBlock + BigInt(1); blockNumber <= currentBlock; blockNumber++) {
                 blockQueue.push(blockNumber);
             }
