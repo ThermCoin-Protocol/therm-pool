@@ -3,10 +3,36 @@ import { useState } from "react";
 
 export default function Register() {
   const [nodeId, setNodeId] = useState("");
+  const [nodeIdValid, setNodeIdValid] = useState(true);
   const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddressValid, setWalletAddressValid] = useState(true);
   const [password, setPassword] = useState("");
 
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+
+  const nodeIdRegex = /^enode:\/\/[0-9a-fA-F]{128}@(\d{1,3}\.){3}\d{1,3}:\d{1,5}\?discport=\d{1,5}$/;
+
+  const handleNodeIdChange = (event) => {
+    const value = event.target.value;
+    const isValid = nodeIdRegex.test(value);
+    setNodeIdValid(isValid);
+    if (isValid) {
+      setNodeId(value);
+    }
+  };
+
+  const walletAddressRegex = /^0x[a-fA-F0-9]{40}$/;
+
+  const handleWalletAddressChange = (event) => {
+    const value = event.target.value;
+    const isValid = walletAddressRegex.test(value);
+    setWalletAddressValid(isValid);
+    if (isValid) {
+      setWalletAddress(value);
+    }
+  };
+
 
   const handleRegisterNode = async (event) => {
     event.preventDefault();
@@ -75,14 +101,17 @@ export default function Register() {
                 <input
                   id="node-id"
                   name="node-id"
-                  type="node-id"
-                  autoComplete="node-id"
+                  type="text"
+                  autoComplete="off"
                   placeholder="enode://..."
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-stone-600 sm:text-sm sm:leading-6 bg-stone-100 pl-2"
-                  onChange={(event) => setNodeId(event.target.value)}
+                  onChange={handleNodeIdChange}
                 />
               </div>
+              {!nodeIdValid && (
+                <p className="text-red-500 text-xs italic">Please enter a valid node ID.</p>
+              )}
             </div>
 
             <div>
@@ -98,14 +127,17 @@ export default function Register() {
                 <input
                   id="wallet-address"
                   name="wallet-address"
-                  type="wallet-address"
-                  autoComplete="wallet-address"
+                  type="text"
+                  autoComplete="off"
                   placeholder="0x..."
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-stone-600 sm:text-sm sm:leading-6 bg-stone-100 pl-2"
-                  onChange={(event) => setWalletAddress(event.target.value)}
+                  onChange={handleWalletAddressChange}
                 />
               </div>
+              {!walletAddressValid && (
+                <p className="text-red-500 text-xs italic">Please enter a valid wallet address.</p>
+              )}
             </div>
 
             <div>
@@ -124,7 +156,7 @@ export default function Register() {
                   type="password"
                   autoComplete="password"
                   placeholder="..."
-                  required
+                  disabled
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-stone-600 sm:text-sm sm:leading-6 bg-stone-100 pl-2"
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -147,7 +179,7 @@ export default function Register() {
                   type="assword"
                   autoComplete="password"
                   placeholder="..."
-                  required
+                  disabled
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-stone-600 sm:text-sm sm:leading-6 bg-stone-100 pl-2"
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -157,15 +189,19 @@ export default function Register() {
             <div className="flex flex-row">
               <button
                 type="submit"
-                className="flex w-full mx-1 justify-center rounded-md bg-stone-600 px-3 py-1.5 text-sm font-semibold leading-6 text-stone-100 shadow-sm hover:bg-stone-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-600 "
+                className={`flex w-full mx-1 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-stone-100 shadow-sm hover:bg-stone-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-600 ${!walletAddressValid || !nodeIdValid ? 'bg-stone-400 cursor-not-allowed' : 'bg-stone-600'
+                  }`}
                 onClick={handleRegisterNode}
+                disabled={!walletAddressValid || !nodeIdValid}
               >
                 Register Node
               </button>
               <button
                 type="button"
-                className="flex w-full mx-1 justify-center rounded-md bg-stone-600 px-3 py-1.5 text-sm font-semibold leading-6 text-stone-100 shadow-sm hover:bg-stone-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-600 "
+                className={`flex w-full mx-1 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-stone-100 shadow-sm hover:bg-stone-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-600 ${true ? 'bg-stone-400 cursor-not-allowed' : 'bg-stone-600'
+                  }`}
                 onClick={handleChangeWallet}
+                disabled
               >
                 Change Wallet
               </button>
